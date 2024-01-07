@@ -178,75 +178,48 @@ export const userTransfer = async (req, res, next) => {
   try {
     const userId = req.params.id;
     const { fromAccountId, toAccountId, amount } = req.body;
-    console.log("userid:",userId)
-    console.log("data from frontend - from account",fromAccountId)
-    console.log("data from frontend - to account",toAccountId)
-    console.log("data from frontend - amaunt",amount)
-    // Validate userId
 
+    console.log("userid:", userId);
+    console.log("data from frontend - from account", fromAccountId);
+    console.log("data from frontend - to account", toAccountId);
+    console.log("data from frontend - amount", amount);
+
+    // Validate userId
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(STATUS_CODE.BAD_REQUEST).send("Invalid user ID.");
     }
-    console.log("user valid succsess")
 
     // Convert amount to a number and validate
     const transferAmount = Number(amount);
-
     if (isNaN(transferAmount) || transferAmount <= 0) {
       return res
         .status(STATUS_CODE.BAD_REQUEST)
         .send("Invalid transfer amount. Must be a positive number.");
     }
-    console.log("amunt is nam now!")
-    console.log("Find user's checking and savings accounts")
 
-    // Find user's checking and savings accounts
-    const checkingAccount = await Account.findOne({
-        owner: userId,
-      accountType: "checking",
-    });
-    const savingsAccount = await Account.findOne({
-        owner: userId,
-      accountType: "savings",
-    });
-    console.log("query to DB to find the checking acc by id",checkingAccount)
-    console.log("query to DB to find the savings acc by id",savingsAccount)
-    if (!checkingAccount || !savingsAccount) {
+    // Find 'from' and 'to' accounts by their IDs
+    const fromAccount = await Account.findById(toAccountId);
+    const toAccount = await Account.findById(fromAccountId);
+
+    if (!fromAccount || !toAccount) {
       return res
         .status(STATUS_CODE.NOT_FOUND)
-        .send("Checking or savings account not found.");
+        .send("One or both accounts not found.");
     }
-console.log("Determine 'from' and 'to' accounts based on the request")
 
-    // Determine 'from' and 'to' accounts based on the request
-    const fromAccount =
-      fromAccountId == "checking" ? checkingAccount : savingsAccount;
-    const toAccount =
-      toAccountId == "savings" ? savingsAccount : checkingAccount;
-    console.log("saving acc is",savingsAccount);
-    console.log("checking acc is",checkingAccount);
-    console.log("transfet mony from acc ", fromAccount, "acc cash:", fromAccount.cash);
-    console.log("transfet to from acc ", toAccount, "acc cash:", toAccount.cash);
-
- 
     if (fromAccount.cash < transferAmount) {
-      console.log(" if   is true");
       return res
         .status(STATUS_CODE.BAD_REQUEST)
-        .send(` in the ${fromAccountId} account.`);
+        .send(`Insufficient funds in the from account.`);
     }
 
-   
     // Perform the transfer operation
-    console.log("preformimg the tranfer and saving")
-
     fromAccount.cash -= transferAmount;
-    console.log(fromAccount.cash, "-" , transferAmount)
     toAccount.cash += transferAmount;
-    console.log(toAccount.cash, "+" , transferAmount)
+
     await fromAccount.save();
     await toAccount.save();
-console.log("saving")
+
     res.status(STATUS_CODE.OK).send({
       message: "Transfer completed successfully",
       fromAccount: fromAccount,
@@ -256,3 +229,4 @@ console.log("saving")
     next(error);
   }
 };
+
