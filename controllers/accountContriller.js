@@ -198,8 +198,8 @@ export const userTransfer = async (req, res, next) => {
     }
 
     // Find 'from' and 'to' accounts by their IDs
-    const fromAccount = await Account.findById(toAccountId);
-    const toAccount = await Account.findById(fromAccountId);
+    const fromAccount = await Account.findById(fromAccountId);
+    const toAccount = await Account.findById(toAccountId);
 
     if (!fromAccount || !toAccount) {
       return res
