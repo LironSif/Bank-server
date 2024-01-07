@@ -16,18 +16,25 @@ export const getAllAccounts = async (req,res,next) => {
 }
 
 // Controller to get single accounts....................................................
-export const getAccountById = async (req,res,next) => {
+export const getAccountsByUserId = async (req, res, next) => {
     try {
-        const account = await Account.findById(req.params.id).populate('owner')
-        if (!account) {
-            res.status(STATUS_CODE.NOT_FOUND)
-            throw new Error("no such account in the DB")
+        const userId = req.params.id;
+        console.log("Received user ID:", userId);
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(STATUS_CODE.BAD_REQUEST).send("Invalid user ID.");
         }
-        res.send(account)
+
+        const accounts = await Account.find({ owner: userId }).populate('owner');
+        if (!accounts.length) {
+            return res.status(STATUS_CODE.NOT_FOUND).send("No accounts found for this user.");
+        }
+
+        res.status(STATUS_CODE.OK).send(accounts);
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
+
 
 // Controller to create account.................................................................
 export const createAccount = async (req, res, next) => {

@@ -3,7 +3,7 @@ import {
   userWithdraw,
   userTransfer,
   getAllAccounts,
-  getAccountById,
+  getAccountsByUserId,
   createAccount,
   deleteAccount,
   userDeposit,
@@ -12,7 +12,7 @@ import {
 const router = express.Router();
 
 router.get("/", getAllAccounts);
-router.get("/:id", getAccountById);
+router.get("/:id", getAccountsByUserId);
 router.post("/:id", createAccount);
 router.delete("/:id", deleteAccount);
 router.post("/:id/deposit", userDeposit);
