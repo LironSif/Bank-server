@@ -184,7 +184,8 @@ export const userTransfer = async (req, res, next) => {
 
         // Determine 'from' and 'to' accounts based on the request
         const fromAccount = fromAccountId === 'checking' ? checkingAccount : savingsAccount;
-        const toAccount = toAccountId === 'saving' ? savingsAccount : checkingAccount;
+        const toAccount = toAccountId === 'savings' ? savingsAccount : checkingAccount;
+
 
         // Check if the 'from' account has sufficient funds
         if (fromAccount.cash < transferAmount) {
