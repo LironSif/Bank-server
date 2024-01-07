@@ -6,7 +6,7 @@ export const getAllUsers = async (req,res,next) => {
     try {
         const users =await User.find().populate('accounts');
 
-        res.send(users)
+        res.send({users})
     } catch (error) {
         next(error)
     }

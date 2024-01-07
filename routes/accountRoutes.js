@@ -18,6 +18,6 @@ router.delete("/:id", deleteAccount);
 router.post("/:id/deposit", userDeposit);
 router.post("/:id/Withdraw", userWithdraw);
 router.post("/:id/transfer", userTransfer);
-router.post("/:id/transfer", userTransfer);
+
 
 export default router;
