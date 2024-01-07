@@ -199,7 +199,9 @@ export const userTransfer = async (req, res, next) => {
 
     // Find 'from' and 'to' accounts by their IDs
     const fromAccount = await Account.findById(fromAccountId);
+    const validatorfrom = fromAccount
     const toAccount = await Account.findById(toAccountId);
+    const validatorfrom2 = toAccount
 
     if (!fromAccount || !toAccount) {
       return res
@@ -224,6 +226,8 @@ export const userTransfer = async (req, res, next) => {
       message: "Transfer completed successfully",
       fromAccount: fromAccount,
       toAccount: toAccount,
+      check: validatorfrom,
+      check2: validatorfrom2,
     });
   } catch (error) {
     next(error);
