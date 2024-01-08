@@ -50,3 +50,13 @@ export const createUser = async (req,res,next) => {
         next(error)
     }
 }
+
+export const deleteUserById = async (req, res, next) => {
+    try {
+        const deleteResult = await User.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: "User deleted", deleteResult });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+};

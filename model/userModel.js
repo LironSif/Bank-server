@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 import Account from './accountModel.js';
 
-
-
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -14,11 +12,16 @@ const userSchema = new mongoose.Schema({
     unique: true,
     match: [/^\S+@\S+\.\S+$/, "Please add a valid email"],
   },
+  password: {
+    type: String,
+    required: [true, "must provide password"],
+  },
   accounts: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Account'
-  }]
-  // Additional user fields as needed
+  }],
+}, {
+  timestamps: true 
 });
 
 const User = mongoose.model("User", userSchema);
