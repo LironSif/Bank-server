@@ -6,10 +6,10 @@ const router = express.Router()
 
 router.get('/', getAllUsers)
 router.get('/:id', getUserById)
-router.post('/', createUser)
+// router.post('/', createUser)
 // expermantal................................
 
-router.post('/s', registerUser)
+router.post('/', registerUser)
 router.post('/login', loginUser)
 router.get('/s/me',protect, getMe);
 

@@ -7,9 +7,11 @@ import jwt from "jsonwebtoken";
 // expermantal................................
 
 // @desc   Register new user
-// @route  POST//api/v1/users/s
+// @route  POST//api/v1/users
 // @access Public
 export const registerUser = async (req, res) => {
+
+  console.log("registerUser")
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
@@ -52,6 +54,7 @@ export const registerUser = async (req, res) => {
 // @route  POST/api/v1/users/login
 // @access Public
 export const loginUser = async (req, res) => {
+  console.log("loginUser")
   const { email, password } = req.body;
   // check for user email
   const user = await User.findOne({ email });
@@ -70,9 +73,10 @@ export const loginUser = async (req, res) => {
 };
 
 // @desc   Get user data
-// @route  GET/api/v1/users/s/me
+// @route  GET/api/v1/users/me
 // @access privte
 export const getMe = async (req, res) => {
+  console.log("getMe")
   const { _id, name, email } = await User.findById(req.user.id);
   res.status(STATUS_CODE.OK);
   res.json({ id: _id, name, email, });
