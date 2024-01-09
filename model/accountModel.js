@@ -20,7 +20,7 @@ const accountSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  // You can add additional fields as needed
+
 });
 
 const Account = mongoose.model("Account", accountSchema);
