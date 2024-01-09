@@ -70,7 +70,7 @@ export const loginUser = async (req, res) => {
 };
 
 // @desc   Get user data
-// @route  GET/api/v1/users/me
+// @route  GET/api/v1/users/s/me
 // @access privte
 export const getMe = async (req, res) => {
   const { _id, name, email } = await User.findById(req.user.id);
